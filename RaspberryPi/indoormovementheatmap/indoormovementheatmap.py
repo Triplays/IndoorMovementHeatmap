@@ -55,7 +55,11 @@ class SensorMessage:
 class IDatabase(ABC):
 
     @abstractmethod
-    async def initialize(self) -> IDatabase:
+    async def __aenter__(self):
+        pass
+
+    @abstractmethod
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
 
     @abstractmethod
@@ -64,10 +68,6 @@ class IDatabase(ABC):
 
     @abstractmethod
     async def get_beacon(self, beacon_id: int) -> Beacon:
-        pass
-
-    @abstractmethod
-    async def close(self):
         pass
 
     @property
@@ -95,12 +95,12 @@ class Service:
             properties={}
         )
 
-    async def register(self):
+    async def __aenter__(self):
         self._zeroconf = Zeroconf(asyncio.get_running_loop())
         await self._zeroconf.register_service(self._info)
         Service.logger.info(f"Registered on port {self._info.port}")
 
-    async def unregister(self):
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self._zeroconf.unregister_service(self._info)
         await self._zeroconf.close()
         Service.logger.info("Service unregistered")
@@ -114,9 +114,10 @@ class Mqtt:
         self._client = None
         self._connected = asyncio.Event()
         self._subscribed = asyncio.Event()
+        self._disconnected = asyncio.Event()
         self._queue: Queue[Tuple[str, str]] = Queue()
 
-    async def connect(self):
+    async def __aenter__(self):
         self._client = aiomqtt.Client(asyncio.get_running_loop())
 
         self._client.on_connect = self._on_connect
@@ -129,14 +130,12 @@ class Mqtt:
         await self._connected.wait()
         await self._subscribed.wait()
 
-    async def get_next_message(self, timeout: float = 1) -> Optional[Tuple[str, str]]:
-        try:
-            return await asyncio.wait_for(self._queue.get(), timeout)
-        except asyncio.TimeoutError:
-            pass
-
-    async def disconnect(self):
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
         self._client.disconnect()
+        await self._disconnected.wait()
+
+    async def get_next_message(self, timeout: float = 1) -> Optional[Tuple[str, str]]:
+        return await self._queue.get()
 
     def _on_connect(self, client, userdata, flags, rc):
         self._connected.set()
@@ -149,7 +148,11 @@ class Mqtt:
         self._queue.put_nowait((message.topic, message.payload))
 
     def _on_disconnect(self, client, userdata, rc):
-        pass
+        self._disconnected.set()
+
+
+class ParseException(Exception):
+    pass
 
 
 class IndoorMovementHeatmap:
@@ -161,20 +164,16 @@ class IndoorMovementHeatmap:
         self._closed = asyncio.Event()
 
     async def run(self):
-        await self._database.initialize()
-        await self._service.register()
-        try:
+        async with self._database, self._mqtt, self._service:
             while not self._closed.is_set():
                 message = await self._mqtt.get_next_message()
-                if message:  # is not null
+                try:
                     parsed = self._parse_message(*message)
-                    position = self._trilaterate(parsed)
-                    device = parsed.device
-                    asyncio.create_task(self._database.store_position(position, device))
-        finally:
-            await self._service.unregister()
-            await self._mqtt.disconnect()
-            await self._database.close()
+                except ParseException:
+                    continue
+                position = self._trilaterate(parsed)
+                device = parsed.device
+                asyncio.create_task(self._database.store_position(position, device))
 
     @staticmethod
     def _parse_message(topic: str, payload: str) -> SensorMessage:
