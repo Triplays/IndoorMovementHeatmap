@@ -56,7 +56,7 @@ nav:hover > .nav_item:hover, .hover > .nav_item:hover {
 }
 
 nav {
-    background-image: url("Menu.png");
+    background-image: url("../images/Menu.png");
     background-size: 60px;
     background-repeat: no-repeat;
     background-position: left top;
@@ -82,3 +82,10 @@ input.flatpickr-input-active, input.flatpickr-input {
     float: right;
 }
 
+#heatmap {
+    width: 100%;
+    height: 80vh;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

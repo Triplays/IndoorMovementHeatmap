@@ -6,6 +6,7 @@ nav.onclick = function () {
 };
 menu.onclick = function () {
     menu.classList.add('hover')
+    app.exit();
 };
 main.onclick = function () {
     nav.classList.remove('hover')
@@ -19,11 +20,10 @@ for (let i = 0; i < nav_items.length; i++) {
         menu.classList.add('hover');
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
-            console.log(this.readyState, this.status)
             if ((this.readyState === 4) && (this.status === 200 || this.status ===0)) {
                 menu.innerHTML = this.responseText;
                 load_select_menu();
-                load_date_picker()
+                load_date_picker();
             } else if (this.status === 404) {
                 menu.innerHTML = 'Error ' + this.status;
             }
