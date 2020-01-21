@@ -1,7 +1,9 @@
 package eu.hansolo.fx.databasehandler;
 
-import javax.sound.midi.Soundbank;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DBHandler {
     private String url;
@@ -46,4 +48,44 @@ public class DBHandler {
         }
     }
 
+    /**
+     * Gets data from database using the given query and returns resultset
+     * @param query
+     * @return Resultset
+     */
+    public ResultSet getData(String query){
+        try{
+            Connection con = connectDb();
+            Statement stmt = con.createStatement();
+            ResultSet data = stmt.executeQuery(query);
+            return data;
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+
+    /**
+     * Build a query with a given hashmap of selected parameters
+     * @param eventmap
+     * @return query
+     */
+    public String buildQuery(HashMap<String, String> eventmap){
+        String query = null;
+        for(Map.Entry<String, String> entry : eventmap.entrySet()){
+            switch (entry.getKey()){
+                case "Time":
+                    if (query == null){
+
+                    } else{query = query + "";}
+                case "Device":
+                    if (query == null){
+
+                    } else{query = query + "";}
+            }
+        }
+        return query;
+    }
 }
