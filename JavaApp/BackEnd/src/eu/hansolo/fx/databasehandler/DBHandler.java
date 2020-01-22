@@ -1,14 +1,14 @@
 package eu.hansolo.fx.databasehandler;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DBHandler {
     private String url;
     private String username;
     private String password;
+    private Connection con;
+    private Statement stmt;
 
     public DBHandler(){
          this( "jdbc:mysql://172.21.1.69:3306/indoormovementheatmap", "collin", "henkdetank");
@@ -18,74 +18,81 @@ public class DBHandler {
         this.url = url;
         this.username = username;
         this.password = password;
+        this.con = connectDb();
+
+        try {
+            this.stmt = this.con.createStatement();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
      * Create database connection and return it
      * @return con
      */
-    public Connection connectDb(){
+    private Connection connectDb(){
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Connection con = DriverManager.getConnection(url, username, password);
+            con = DriverManager.getConnection(url, username, password);
             return con;
         } catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return null;
     }
 
     public void dbTest() {
         try {
-            Connection con = connectDb();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from devicetypes");
+            ResultSet rs = this.stmt.executeQuery("select * from device_types");
             while (rs.next())
                 System.out.println(rs.getInt(1) + " " + rs.getString(2)); //should still change this aswell. dk what values it will return
-            con.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     /**
      * Gets data from database using the given query and returns resultset
-     * @param query
-     * @return Resultset
+     * @param query This can be any kind of query that fits the database that you are connected to
      */
     public ResultSet getData(String query){
         try{
-            Connection con = connectDb();
-            Statement stmt = con.createStatement();
-            ResultSet data = stmt.executeQuery(query);
-            return data;
+            return this.stmt.executeQuery(query);
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return null;
     }
 
 
+    // Im probably gonna move these two method
     /**
-     * Build a query with a given hashmap of selected parameters
-     * @param eventmap
-     * @return query
+     * Returns hashmap of all registered types
+     * @return typeMap  Key = type_id and Value = description
+     * @throws SQLException
      */
-    public String buildQuery(HashMap<String, String> eventmap){
-        String query = null;
-        for(Map.Entry<String, String> entry : eventmap.entrySet()){
-            switch (entry.getKey()){
-                case "Time":
-                    if (query == null){
-
-                    } else{query = query + "";}
-                case "Device":
-                    if (query == null){
-
-                    } else{query = query + "";}
-            }
+    public HashMap<Integer, String> getAllTypes() throws SQLException {
+        HashMap<Integer, String> typeMap = new HashMap<>();
+        ResultSet types = this.stmt.executeQuery("SELECT * FROM device_types");
+        while(types.next()){
+            typeMap.put(types.getInt(1), types.getString(2));
         }
-        return query;
+        return typeMap;
+    }
+
+    /**
+     * Returns hashmap of all registered devices
+     * @return devicesMap Key = device_id and Value = device_type
+     * @throws SQLException
+     */
+    public HashMap<String, Integer> getAllDevices() throws SQLException{
+        HashMap<String, Integer> devicesMap = new HashMap<>();
+        ResultSet devices = this.stmt.executeQuery("SELECT * FROM devices");
+        while(devices.next()){
+            devicesMap.put(devices.getString(1), devices.getInt(2));
+        }
+        return devicesMap;
     }
 }

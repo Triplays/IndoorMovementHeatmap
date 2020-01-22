@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import eu.hansolo.fx.databasehandler.DBHandler;
+import eu.hansolo.fx.databasehandler.QueryBuilder;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
@@ -21,15 +22,13 @@ import javafx.stage.Stage;
 public class JustHeatmap extends Application{
 	private HeatMap                        heatMap;
 	private StackPane                      pane;
-	private int                            xColumn;
-	private int                            yColumn;
+	final private static int               XCOLUMN = 1;
+	final private static int               YCOLUMN = 2;
 	
 	@Override public void init() {
 		pane						= new StackPane();
 		heatMap						= new HeatMap(400, 400, ColorMapping.BLUE_CYAN_GREEN_YELLOW_RED, 40);
 		heatMap.setOpacityDistribution(OpacityDistribution.CUSTOM);
-		xColumn                     = 1;
-		yColumn                     = 2;
     }
     
 	@Override public void start(Stage stage) {
@@ -42,11 +41,11 @@ public class JustHeatmap extends Application{
         stage.setScene(scene);
         stage.show();
 
-        HashMap events = new HashMap(); // This is where Zi-Wen his hashmap should go
-        DBHandler dbHan = new DBHandler();
+        DBHandler dbHan =               new DBHandler();
+        QueryBuilder queryBuilder =     new QueryBuilder();
 
         // Once everything is ready this code should add data to the heatmap from the given hashmap
-        //String query = dbHan.buildQuery(events);
+        //String query = queryBuilder.buildQuery(//this should get the required values);
         //ResultSet data = dbHan.getData(query);
         //addDataHeatmap(data);
 
@@ -94,10 +93,10 @@ public class JustHeatmap extends Application{
     public void addDataHeatmap(ResultSet data){
 	    try{
 	        while(data.next()){
-	            heatMap.addEvent(data.getInt(xColumn), data.getInt(yColumn));
+	            heatMap.addEvent(data.getInt(XCOLUMN), data.getInt(YCOLUMN));
             }
         } catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }
