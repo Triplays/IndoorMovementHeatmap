@@ -2,6 +2,7 @@
 .custom-select {
     position: relative;
     font-family: Arial;
+    width: 100%;
 }
 
 .custom-select select {

@@ -1,31 +1,44 @@
 <h2>Time</h2>
 <div>
     <h3>Time select</h3>
+
+    <label class="select_box_container">Minutes
+        <input type="radio" name="time" value="minutes">
+        <span class="check_mark"></span>
+    </label>
+
     <label class="select_box_container">Hours
-        <input type="radio" checked="checked" name="radio">
+        <input type="radio" name="time" value="hours">
         <span class="check_mark"></span>
     </label>
 
     <label class="select_box_container">Days
-        <input type="radio" name="radio">
+        <input type="radio" name="time" value="days">
         <span class="check_mark"></span>
     </label>
 
     <label class="select_box_container">Weeks
-        <input type="radio" name="radio">
+        <input type="radio" name="time" value="weeks">
+        <span class="check_mark"></span>
+    </label>
+
+    <label class="select_box_container">Months
+        <input type="radio" name="time" value="months">
         <span class="check_mark"></span>
     </label>
 
     <label class="select_box_container">Years
-        <input type="radio" name="radio">
+        <input type="radio" name="time" value="years">
         <span class="check_mark"></span>
     </label>
-    <input type="range" min="1" max="100" value="50" class="slider">
+
+    <p>Amount: <span class="slider_count"></span></p>
+    <input type="range" min="1" max="100" value="50" class="slider" id="time_amount">
 </div>
 <div>
     <h3>Date select</h3>
     <label class="select_box_container container">Use dates
-        <input type="radio" name="radio">
+        <input type="radio" name="time" value="dates">
         <span class="check_mark"></span>
     </label>
     <label class="container"> From:

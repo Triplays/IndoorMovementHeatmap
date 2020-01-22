@@ -35,19 +35,19 @@ public class Browser extends Region {
                 });
 
     }
-//
-//    private Node createSpacer() {
-//        Region spacer = new Region();
-//        HBox.setHgrow(spacer, Priority.ALWAYS);
-//        return spacer;
-//    }
-//
-//    @Override
-//    protected void layoutChildren() {
-//        double w = getWidth();
-//        double h = getHeight();
-//        layoutInArea(browser, 0, 0, w, h, 0, HPos.CENTER, VPos.CENTER);
-//    }
+
+    private Node createSpacer() {
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        return spacer;
+    }
+
+    @Override
+    protected void layoutChildren() {
+        double w = getWidth();
+        double h = getHeight();
+        layoutInArea(browser, 0, 0, w, h, 0, HPos.CENTER, VPos.CENTER);
+    }
 
     @Override
     protected double computePrefWidth(double height) {

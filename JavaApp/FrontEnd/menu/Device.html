@@ -1,6 +1,6 @@
 <h2>Device</h2>
 <p> Object type:</p>
-<div class="custom-select container" style="width:100%;">
+<div class="custom-select container" id="object_type">
     <select>
         <option value="0">Select car:</option>
         <option value="1">Audi</option>
@@ -17,29 +17,34 @@
         <option value="12">Volvo</option>
     </select>
 </div>
-<div>
-    <label class="select_box_container">All
-        <input type="checkbox">
+<div id="devices">
+    <label class="select_box_container">
+        <div>All</div>
+        <input type="checkbox" value="all">
         <span class="check_mark"></span>
     </label>
 
-    <label class="select_box_container">One
-        <input type="checkbox" checked="checked">
+    <label class="select_box_container">
+        <input type="checkbox" value="">
+        <div>One</div>
         <span class="check_mark"></span>
     </label>
 
-    <label class="select_box_container">Two
-        <input type="checkbox">
+    <label class="select_box_container">
+        <input type="checkbox" value="">
+        <div>Two</div>
         <span class="check_mark"></span>
     </label>
 
-    <label class="select_box_container">Three
-        <input type="checkbox">
+    <label class="select_box_container">
+        <input type="checkbox" value="">
+        <div>Three</div>
         <span class="check_mark"></span>
     </label>
 
-    <label class="select_box_container">Four
-        <input type="checkbox">
+    <label class="select_box_container">
+        <input type="checkbox" value="">
+        <div>Four</div>
         <span class="check_mark"></span>
     </label>
 </div>
