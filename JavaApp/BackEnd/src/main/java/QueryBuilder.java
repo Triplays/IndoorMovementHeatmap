@@ -1,4 +1,4 @@
-package eu.hansolo.fx.databasehandler;
+package main.java;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

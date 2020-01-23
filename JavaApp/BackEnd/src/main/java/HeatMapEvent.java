@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.fx.heatmap;
+package main.java;
+
+import main.java.OpacityDistribution;
 
 /**
  * Created by

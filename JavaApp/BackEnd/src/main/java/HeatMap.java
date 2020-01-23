@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package eu.hansolo.fx.heatmap;
+package main.java;
 
 import javafx.animation.Interpolator;
-import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -33,10 +30,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
-import javax.imageio.ImageIO;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +46,7 @@ public class HeatMap extends ImageView {
     private static final SnapshotParameters SNAPSHOT_PARAMETERS = new SnapshotParameters();
     private List<HeatMapEvent>  eventList;
     private Map<String, Image>  eventImages;
-    private ColorMapping        colorMapping;
+    private ColorMapping colorMapping;
     private LinearGradient      mappingGradient;
     private boolean             fadeColors;
     private double              radius;

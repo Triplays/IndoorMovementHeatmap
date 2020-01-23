@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.fx.heatmap;
+package main.java;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
