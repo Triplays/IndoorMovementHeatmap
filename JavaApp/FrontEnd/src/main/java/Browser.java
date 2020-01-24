@@ -1,3 +1,5 @@
+package main.java;
+
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.geometry.HPos;
@@ -14,7 +16,7 @@ public class Browser extends Region {
 
     final WebView browser = new WebView();
     final WebEngine webEngine = browser.getEngine();
-    final String url = Main.class.getResource("index.html").toExternalForm();
+    final String url = Main.class.getResource("../interface/Index.html").toExternalForm();
 
     public Browser() {
         //apply the styles

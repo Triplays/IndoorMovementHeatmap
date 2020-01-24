@@ -56,7 +56,6 @@ nav:hover > .nav_item:hover, .hover > .nav_item:hover {
 }
 
 nav {
-    background-image: url("../images/Menu.png");
     background-size: 60px;
     background-repeat: no-repeat;
     background-position: left top;
@@ -64,7 +63,7 @@ nav {
 }
 
 nav.hover, nav:hover {
-    background-image: unset;
+    background-image: unset !important;
 }
 
 menu {

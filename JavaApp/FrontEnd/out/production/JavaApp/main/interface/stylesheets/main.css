@@ -1,0 +1,90 @@
+
+body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Monospaced, monospace;
+    background-color: #888;
+    color: rgb(255, 255, 255);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    /*background-image: url("Images/Turbine.jpeg");*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+    /*background-attachment: fixed;*/
+    /*background-position: center;*/
+}
+
+main {
+    padding: 20px 20px 20px 80px;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+nav, menu {
+    margin: 0;
+    float: left;
+    height: 100vh;
+    width: 60px;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    background-color: black;
+    transition-duration: 0.5s;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+nav > .nav_item, menu > .nav_item {
+    box-sizing: border-box;
+    display: none;
+    padding: 1em;
+}
+
+nav:hover, .hover {
+    max-width: 600px;
+    width: 300px;
+    padding: 1em;
+}
+
+nav:hover > .nav_item, .hover > .nav_item {
+    display: block;
+    min-width: 180px;
+}
+
+nav:hover > .nav_item:hover, .hover > .nav_item:hover {
+    background-color: #999999;
+    cursor: pointer;
+}
+
+nav {
+    background-size: 60px;
+    background-repeat: no-repeat;
+    background-position: left top;
+    /*background-attachment: fixed;*/
+}
+
+nav.hover, nav:hover {
+    background-image: unset !important;
+}
+
+menu {
+    background-color: #333333;
+    width: 0px;
+    padding: 0px;
+}
+
+.container {
+    display: block;
+    margin-bottom: 16px;
+}
+
+input.flatpickr-input-active, input.flatpickr-input {
+    float: right;
+}
+
+#heatmap {
+    width: 100%;
+    height: 80vh;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

@@ -20,6 +20,7 @@ nav_items = nav.getElementsByClassName('nav_item');
 for (let i = 0; i < nav_items.length; i++) {
     const item = nav_items[i];
     const name = item.innerHTML.replace(/\s/g, '');
+    // const name = item.href;
     item.onclick = function () {
         menu.classList.add('hover');
         var xhttp = new XMLHttpRequest();
@@ -33,7 +34,7 @@ for (let i = 0; i < nav_items.length; i++) {
         };
         xhttp.open("GET", 'menu/' + name + ".html", true);
         xhttp.send();
-    }
+    };
 }
 
 

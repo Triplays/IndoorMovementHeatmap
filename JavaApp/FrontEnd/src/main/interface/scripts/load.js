@@ -63,8 +63,9 @@ function set_check_boxes(group) {
 
     element.addEventListener('click', function () {
         var inputs = this.getElementsByTagName('input');
+        // app.print('click');
         for (var i = 1; i < inputs.length; i++) {
-            if (inputs[i].checked) {
+            if (inputs[i].checked === true) {
                 app.append(this.group, inputs[i].value);
             } else {
                 app.remove(this.group, inputs[i].value);
@@ -79,6 +80,7 @@ function set_check_boxes(group) {
 
     for (var i = 0; i < options.length; i++) {
         holder.getElementsByTagName('div')[0].innerHTML = options[i];
+        holder.getElementsByTagName('input')[0].value = options[i];
         element.innerHTML += holder.outerHTML;
     }
 
@@ -91,7 +93,7 @@ function set_check_boxes(group) {
         }
     });
     for (var i = 1; i < labels.length; i++) {
-        labels[i].getElementsByTagName('input')[0].checked = selected.includes(options[i]);
+        labels[i].getElementsByTagName('input')[0].checked = selected.includes(options[i-1]);
         // app.print(labels[i].getElementsByTagName('input')[0].checked);
         labels[i].addEventListener('click', function () {
             var input = this.getElementsByTagName('input')[0];

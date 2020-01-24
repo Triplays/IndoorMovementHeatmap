@@ -1,3 +1,5 @@
+package main.java;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,7 +11,7 @@ public class JavaApp {
     public ArrayList<String> color_mappings, point_opacity_s, object_types, devices, devices_s;
 
     public void test() {
-        System.out.printf("%d %d %d %s %s %s %s %s %s %n", time_amount, time_spent, radius, point_opacity, color_mapping, time, parameter, object_type, devices, devices_s);
+        System.out.printf("%d %d %d %s %s %s %s %s %s %n", time_amount, time_spent, radius, point_opacity, color_mapping, time, parameter, object_type, devices_s);
 //        System.out.println(String.join(" ", time_amount, time_spent, radius, point_opacity, color_mapping, time, parameter, object_type, devices));
     }
 
@@ -32,18 +34,22 @@ public class JavaApp {
     public void append(String par_name, String value) {
         switch (par_name) {
             case "devices_s":
-                if (!devices_s.contains(value)) devices_s.add(value);
             case "devices":
-                if (!devices_s.contains(value)) devices_s.add(value);
+                if (!devices_s.contains(value)) {
+                    devices_s.add(value);
+//                    System.out.println("" + devices_s + " " + value);
+                }
+                break;
         }
     }
 
     public void remove(String par_name, String value) {
         switch (par_name) {
             case "devices_s":
-                devices_s.remove(value);
             case "devices":
                 devices_s.remove(value);
+//                System.out.println(devices_s);
+                break;
         }
     }
 
