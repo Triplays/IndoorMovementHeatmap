@@ -407,11 +407,11 @@ public class HeatMap extends ImageView {
 
     /**
      * Save a given heatmap as a png file in the output file
-     * @param map
      */
-    public void saveHeatmapImage(HeatMap map) {
-        File outputFile = new File("D:/HeatmapPNG/Heatmap.png");
-        BufferedImage bImage = SwingFXUtils.fromFXImage(map.getImage(), null);
+    public void saveHeatmapImage() {
+        File outputFile = new File("Heatmap.png");
+//        File outputFile = new File("src/main/resources/interface/Heatmap.png");
+        BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
         try {
             ImageIO.write(bImage, "png", outputFile);
         } catch (IOException e) {

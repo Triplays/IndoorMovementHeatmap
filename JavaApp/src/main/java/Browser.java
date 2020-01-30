@@ -19,6 +19,7 @@ public class Browser extends Region {
     public Browser() {
         //apply the styles
         getStyleClass().add("browser");
+        System.out.println(url);
         // load the web page
         webEngine.load(url);
         //add the web view to the scene

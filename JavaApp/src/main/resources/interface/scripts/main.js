@@ -13,7 +13,8 @@ menu.addEventListener('click', function () {
 main.addEventListener('click', function () {
     nav.classList.remove('hover');
     menu.classList.remove('hover');
-    app.test();
+    app.submitParams();
+    load_heat_map();
 });
 
 nav_items = nav.getElementsByClassName('nav_item');
@@ -36,7 +37,6 @@ for (let i = 0; i < nav_items.length; i++) {
         xhttp.send();
     };
 }
-
 
 
 

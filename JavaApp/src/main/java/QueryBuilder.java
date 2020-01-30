@@ -45,7 +45,7 @@ public class QueryBuilder {
      * @return Part of where clause query
      */
     static private String buildDateClause(String date_from, String date_till){
-        return String.format("( %s <= positions.datetime <= %s )", date_from, date_till);
+        return String.format("( \"%s\" <= positions.datetime <= \"%s\" )", date_from, date_till);
     }
 
     /**
@@ -78,7 +78,7 @@ public class QueryBuilder {
         else{
             date_from = dtf.format(now.minusYears(time_amount));
         }
-        return String.format(" ( %s <= positions.datetime <= %s )", date_from, date_till);
+        return String.format(" ( \"%s\" <= positions.datetime <= \"%s\" )", date_from, date_till);
     }
 
     /**
@@ -91,10 +91,10 @@ public class QueryBuilder {
         String devicesClause = null;
         for(String device : devices){
             if (devicesClause == null){
-                devicesClause = String.format("device_id = %s",device);
+                devicesClause = String.format("device_id = \"%s\"",device);
             }
             else{
-                devicesClause = String.format("%s OR device_id = %s",devicesClause, device);
+                devicesClause = String.format("%s OR device_id = \"%s\"",devicesClause, device);
             }
         }
         return String.format("(%s)",devicesClause);

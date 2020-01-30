@@ -31,8 +31,8 @@ public class JustHeatmap extends Application{
     }
     
 	@Override public void start(Stage stage) {
-    	VBox layout = new VBox();
-    	pane.getChildren().setAll(layout, heatMap);
+    	//VBox layout = new VBox();
+    	//pane.getChildren().setAll(layout, heatMap);
 
     	//addDemoPoints();
 

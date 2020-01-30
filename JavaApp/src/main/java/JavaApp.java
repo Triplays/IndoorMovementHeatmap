@@ -14,6 +14,8 @@ public class JavaApp {
     public DBHandler                dbHan;
     public HashMap<String, Integer> devicesMap;
     public HashMap<Integer, String> typesMap;
+//    public String                   image_url = Main.class.getResource("Heatmap.png").toExternalForm();
+    public String                   image_url = "D:/Project MinorIoT/heatmapProjectGradle/Heatmap.png";
 
     public void test() {
         System.out.printf("%d %d %d %s %s %s %s %s %s %n", time_amount, time_spent, radius, point_opacity, color_mapping, time, parameter, object_type, devices_s);
@@ -25,6 +27,7 @@ public class JavaApp {
     public JavaApp() {
         color_mappings = new ArrayList<>(Arrays.asList("Normal", "Gray"));
         point_opacity_s = new ArrayList<>(Arrays.asList("Normal", "Something"));
+        dbHan = new DBHandler();
         typesMap = dbHan.getAllTypes();
         devicesMap = dbHan.getAllDevices();
         object_types = hashValuesToList(typesMap);
@@ -35,7 +38,7 @@ public class JavaApp {
         color_mapping = color_mappings.get(0).toLowerCase();
         object_type = object_types.get(0).toLowerCase();
         heatMap = new HeatMap(400, 400); //needs to be height and width of image pane of application
-        dbHan = new DBHandler();
+        System.out.println();
     }
 
     public void submitParams(){
@@ -45,8 +48,13 @@ public class JavaApp {
         } else {
             query = QueryBuilder.buildQuery(time, time_amount, devices_s);
         }
+        System.out.println(query);
         ResultSet data = dbHan.getData(query);
+        heatMap.setOpacityDistribution(OpacityDistribution.LINEAR);
+        heatMap.setEventRadius(20);
+        heatMap.clearHeatMap();
         heatMap.addDataHeatmap(data);
+        heatMap.saveHeatmapImage();
     }
 
     public void print(String text) {
@@ -102,6 +110,7 @@ public class JavaApp {
             case "time":
                 time = value;
                 break;
+
         }
     }
 
@@ -127,6 +136,8 @@ public class JavaApp {
                 return get_json(devices_s);
             case "devices":
                 return get_json(devices);
+            case "image":
+                return image_url;
         }
         return null;
     }

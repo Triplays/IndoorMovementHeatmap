@@ -119,6 +119,17 @@ function set_radio_buttons(group) {
 }
 
 
+function load_heat_map() {
+    var img = document.getElementById('heatmap');
+    app.print(app.get("image"));
+    img.style.backgroundImage = "url('images/Zernike heatmap.png')";
+    setTimeout(function() {
+        var img = document.getElementById('heatmap');
+        app.print(app.get("image"));
+        img.style.backgroundImage = "url('file:/"+ app.get("image") +"')";
+    }, 1000);
+}
+
 function load_options() {
     try {
         set_slider('time_amount');
