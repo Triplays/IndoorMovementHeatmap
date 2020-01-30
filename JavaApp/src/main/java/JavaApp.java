@@ -1,15 +1,19 @@
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 
 // JavaScript interface object
 public class JavaApp {
 
-    public int time_amount = 1, time_spent = 1, radius = 1;
-    public String point_opacity, color_mapping, object_type, parameter = "normal", time = "hours";
-    public ArrayList<String> color_mappings, point_opacity_s, object_types, devices, devices_s;
-    public HeatMap heatMap;
-    public DBHandler dbHan;
+    public int                      time_amount = 1, time_spent = 1, radius = 1;
+    public String                   point_opacity, color_mapping, object_type, parameter = "normal", time = "hours";
+    public ArrayList<String>        color_mappings, point_opacity_s, object_types, devices, devices_s;
+    public HeatMap                  heatMap;
+    public DBHandler                dbHan;
+    public HashMap<String, Integer> devicesMap;
+    public HashMap<Integer, String> typesMap;
 
     public void test() {
         System.out.printf("%d %d %d %s %s %s %s %s %s %n", time_amount, time_spent, radius, point_opacity, color_mapping, time, parameter, object_type, devices_s);
@@ -21,8 +25,10 @@ public class JavaApp {
     public JavaApp() {
         color_mappings = new ArrayList<>(Arrays.asList("Normal", "Gray"));
         point_opacity_s = new ArrayList<>(Arrays.asList("Normal", "Something"));
-        object_types = new ArrayList<>(Arrays.asList("Carts", "Baskets"));
-        devices = new ArrayList<>(Arrays.asList("123", "456", "789", "1234", "2345"));
+        typesMap = dbHan.getAllTypes();
+        devicesMap = dbHan.getAllDevices();
+        object_types = hashValuesToList(typesMap);
+        devices = hashKeysToList(devicesMap);
         devices_s = new ArrayList<>();
         devices_s.addAll(devices);
         point_opacity = point_opacity_s.get(0).toLowerCase();
@@ -123,6 +129,38 @@ public class JavaApp {
                 return get_json(devices);
         }
         return null;
+    }
+
+    /**
+     * Puts all the values of a hashmap into an Arraylist
+     * @param map can be any hashmap
+     * @return list a list of values in the given hashmap
+     */
+    public ArrayList<String> hashValuesToList(HashMap map){
+       ArrayList<String> list = new ArrayList<>();
+        Iterator it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry)it.next();
+            list.add(pair.getValue().toString());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+       return list;
+    }
+
+    /**
+     * Puts all the keys of a hashmap into an Arraylist
+     * @param map can be any hashmap
+     * @return list a list of keys in the given hashmap
+     */
+    public ArrayList<String> hashKeysToList(HashMap map) {
+        ArrayList<String> list = new ArrayList<>();
+        Iterator it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry) it.next();
+            list.add(pair.getKey().toString());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+        return list;
     }
 
     private String get_json(ArrayList<String> list, String value) {

@@ -9,7 +9,7 @@ public class DBHandler {
     public Statement stmt;
 
     public DBHandler(){
-         this( "jdbc:mysql://145.53.29.222:3306/indoormovementheatmap", "collin", "henkdetank");
+         this( "jdbc:mysql://localhost:3306/indoormovementheatmap?serverTimezone=CET", "root", "");
     }
 
     public DBHandler(String url, String username, String password){
@@ -41,7 +41,7 @@ public class DBHandler {
 
     public void dbTest() {
         try {
-            ResultSet rs = this.stmt.executeQuery("SELECT * FROM device_types");
+            ResultSet rs = this.stmt.executeQuery("SELECT * FROM devicetypes");
             while (rs.next())
                 System.out.println(rs.getInt(1) + " " + rs.getString(2)); //should still change this aswell. dk what values it will return
         } catch (Exception e) {
@@ -67,13 +67,16 @@ public class DBHandler {
     /**
      * Returns hashmap of all registered types
      * @return typeMap  Key = type_id and Value = description
-     * @throws SQLException
      */
-    public HashMap<Integer, String> getAllTypes() throws SQLException {
+    public HashMap<Integer, String> getAllTypes(){
         HashMap<Integer, String> typeMap = new HashMap<>();
-        ResultSet types = this.stmt.executeQuery("SELECT * FROM device_types");
-        while(types.next()){
-            typeMap.put(types.getInt(1), types.getString(2));
+        try {
+            ResultSet types = this.stmt.executeQuery("SELECT * FROM devicetypes");
+            while (types.next()) {
+                typeMap.put(types.getInt(1), types.getString(2));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return typeMap;
     }
@@ -81,13 +84,16 @@ public class DBHandler {
     /**
      * Returns hashmap of all registered devices
      * @return devicesMap Key = device_id and Value = device_type
-     * @throws SQLException
      */
-    public HashMap<String, Integer> getAllDevices() throws SQLException{
+    public HashMap<String, Integer> getAllDevices(){
         HashMap<String, Integer> devicesMap = new HashMap<>();
-        ResultSet devices = this.stmt.executeQuery("SELECT * FROM devices");
-        while(devices.next()){
-            devicesMap.put(devices.getString(1), devices.getInt(2));
+        try {
+            ResultSet devices = this.stmt.executeQuery("SELECT * FROM devices");
+            while (devices.next()) {
+                devicesMap.put(devices.getString(1), devices.getInt(2));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return devicesMap;
     }
