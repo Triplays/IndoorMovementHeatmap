@@ -47,4 +47,6 @@ public enum ColorMapping {
     ColorMapping(final Stop... STOPS) {
         mapping = new LinearGradient(0, 0, 100, 0, false, CycleMethod.NO_CYCLE, STOPS);        
     }
+    
+
 }

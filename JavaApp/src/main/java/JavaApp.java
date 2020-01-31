@@ -1,3 +1,4 @@
+import java.io.File;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,15 +8,14 @@ import java.util.Iterator;
 // JavaScript interface object
 public class JavaApp {
 
-    public int                      time_amount = 1, time_spent = 1, radius = 1;
-    public String                   point_opacity, color_mapping, object_type, parameter = "normal", time = "hours";
+    public int                      time_amount = 1, time_spent = 1, radius = 40;
+    public String                   point_opacity, color_mapping, object_type, parameter = "normal", time = "hours", date_from = "2019/01/1 00:00:00", date_till = "2020/02/02 00:00:00";
     public ArrayList<String>        color_mappings, point_opacity_s, object_types, devices, devices_s;
     public HeatMap                  heatMap;
     public DBHandler                dbHan;
     public HashMap<String, Integer> devicesMap;
     public HashMap<Integer, String> typesMap;
-//    public String                   image_url = Main.class.getResource("Heatmap.png").toExternalForm();
-    public String                   image_url = "D:/Project MinorIoT/heatmapProjectGradle/Heatmap.png";
+    public String                   image_url = new File("Heatmap.png").getAbsolutePath().replace('\\', '/');
 
     public void test() {
         System.out.printf("%d %d %d %s %s %s %s %s %s %n", time_amount, time_spent, radius, point_opacity, color_mapping, time, parameter, object_type, devices_s);
@@ -25,8 +25,8 @@ public class JavaApp {
 
 
     public JavaApp() {
-        color_mappings = new ArrayList<>(Arrays.asList("Normal", "Gray"));
-        point_opacity_s = new ArrayList<>(Arrays.asList("Normal", "Something"));
+        point_opacity_s = new ArrayList<>(Arrays.asList("EXPONENTIAL", "TAN_HYP", "CUSTOM", "LINEAR"));
+        color_mappings = new ArrayList<>(Arrays.asList("LIME_YELLOW_RED", "BLUE_CYAN_GREEN_YELLOW_RED", "INFRARED_1", "INFRARED_2", "INFRARED_3", "INFRARED_4", "BLUE_GREEN_RED", "BLUE_BLACK_RED", "BLUE_YELLOW_RED","GREEN_BLACK_RED","GREEN_YELLOW_RED", "RAINBOW","BLACK_WHITE", "WHITE_BLACK"));
         dbHan = new DBHandler();
         typesMap = dbHan.getAllTypes();
         devicesMap = dbHan.getAllDevices();
@@ -38,23 +38,28 @@ public class JavaApp {
         color_mapping = color_mappings.get(0).toLowerCase();
         object_type = object_types.get(0).toLowerCase();
         heatMap = new HeatMap(400, 400); //needs to be height and width of image pane of application
-        System.out.println();
+        System.out.println(image_url);
     }
 
     public void submitParams(){
         String query = "";
         if (time.equals("dates")) {
-            query = QueryBuilder.buildQuery("1", "2", devices_s); // 1 and 2 need to be date_from and date_till
+            query = QueryBuilder.buildQuery(date_from, date_till, devices_s); // 1 and 2 need to be date_from and date_till
         } else {
             query = QueryBuilder.buildQuery(time, time_amount, devices_s);
         }
         System.out.println(query);
         ResultSet data = dbHan.getData(query);
-        heatMap.setOpacityDistribution(OpacityDistribution.LINEAR);
-        heatMap.setEventRadius(20);
-        heatMap.clearHeatMap();
+        setHeatmapParams();
         heatMap.addDataHeatmap(data);
         heatMap.saveHeatmapImage();
+    }
+
+    private void setHeatmapParams(){
+        heatMap.setOpacityDistribution(OpacityDistribution.valueOf(point_opacity.toUpperCase()));
+        heatMap.setColorMapping(ColorMapping.valueOf(color_mapping.toUpperCase()));
+        heatMap.setEventRadius(radius);
+        heatMap.clearHeatMap();
     }
 
     public void print(String text) {

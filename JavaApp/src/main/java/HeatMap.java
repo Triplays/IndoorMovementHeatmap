@@ -421,7 +421,7 @@ public class HeatMap extends ImageView {
 
     /**
      * Adds data from a sql result set into the heatmap
-     * @param data
+     * @param data Resultset of positions (that fit into the selected parameters)
      */
     public void addDataHeatmap(ResultSet data){
         try{

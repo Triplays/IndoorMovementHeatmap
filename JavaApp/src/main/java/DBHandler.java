@@ -32,8 +32,10 @@ public class DBHandler {
     private Connection connectDb(){
         try{
             con = DriverManager.getConnection(url, username, password);
+            System.out.println("Database connection established");
             return con;
         } catch (Exception e){
+            System.out.println("Database connection failed");
             e.printStackTrace();
         }
         return null;
