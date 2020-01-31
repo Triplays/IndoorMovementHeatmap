@@ -1,9 +1,6 @@
 import java.io.File;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 // JavaScript interface object
 public class JavaApp {
@@ -30,15 +27,16 @@ public class JavaApp {
         dbHan = new DBHandler();
         typesMap = dbHan.getAllTypes();
         devicesMap = dbHan.getAllDevices();
-        object_types = hashValuesToList(typesMap);
+        object_types = new ArrayList<>();
+        object_types.add("All");
+        object_types.addAll(hashValuesToList(typesMap));
         devices = hashKeysToList(devicesMap);
         devices_s = new ArrayList<>();
-        devices_s.addAll(devices);
+//        devices_s.addAll(devices);
         point_opacity = point_opacity_s.get(0).toLowerCase();
         color_mapping = color_mappings.get(0).toLowerCase();
         object_type = object_types.get(0).toLowerCase();
         heatMap = new HeatMap(400, 400); //needs to be height and width of image pane of application
-        System.out.println(image_url);
     }
 
     public void submitParams(){
@@ -51,8 +49,23 @@ public class JavaApp {
         System.out.println(query);
         ResultSet data = dbHan.getData(query);
         setHeatmapParams();
+        getDevicesForObjectType(object_type);
         heatMap.addDataHeatmap(data);
         heatMap.saveHeatmapImage();
+    }
+
+    public List<String> getDevicesForObjectType(String objectType) {
+        if(objectType.equalsIgnoreCase("All")){
+            return this.devices;
+        }
+
+        List<String> devices = new ArrayList<>();
+        for(Map.Entry<String, Integer> device : devicesMap.entrySet()) {
+            if(typesMap.get(device.getValue()).equalsIgnoreCase(objectType)) {
+                devices.add(device.getKey());
+            }
+        }
+        return devices;
     }
 
     private void setHeatmapParams(){
@@ -107,6 +120,7 @@ public class JavaApp {
                 color_mapping = value;
                 break;
             case "object_type":
+                devices_s = new ArrayList<>();
                 object_type = value;
                 break;
             case "parameter":
@@ -140,7 +154,7 @@ public class JavaApp {
             case "devices_s":
                 return get_json(devices_s);
             case "devices":
-                return get_json(devices);
+                return get_json((ArrayList<String>) getDevicesForObjectType(object_type));
             case "image":
                 return image_url;
         }
@@ -152,15 +166,8 @@ public class JavaApp {
      * @param map can be any hashmap
      * @return list a list of values in the given hashmap
      */
-    public ArrayList<String> hashValuesToList(HashMap map){
-       ArrayList<String> list = new ArrayList<>();
-        Iterator it = map.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry)it.next();
-            list.add(pair.getValue().toString());
-            it.remove(); // avoids a ConcurrentModificationException
-        }
-       return list;
+    public ArrayList<String> hashValuesToList(HashMap<?, String>  map){
+        return new ArrayList<>(map.values());
     }
 
     /**
@@ -168,15 +175,8 @@ public class JavaApp {
      * @param map can be any hashmap
      * @return list a list of keys in the given hashmap
      */
-    public ArrayList<String> hashKeysToList(HashMap map) {
-        ArrayList<String> list = new ArrayList<>();
-        Iterator it = map.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) it.next();
-            list.add(pair.getKey().toString());
-            it.remove(); // avoids a ConcurrentModificationException
-        }
-        return list;
+    public ArrayList<String> hashKeysToList(HashMap<String, ?> map) {
+        return new ArrayList<>(map.keySet());
     }
 
     private String get_json(ArrayList<String> list, String value) {

@@ -52,6 +52,23 @@ function set_select_menu(id) {
         // app.print(choice.innerHTML.toLowerCase());
         app.set(this.id, choice.toLowerCase());
     });
+    if (id === "object_type")
+        element.addEventListener('click', function () {
+            // const name = item.href;
+            menu.classList.add('hover');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if ((this.readyState === 4) && (this.status === 200 || this.status === 0)) {
+                    menu.innerHTML = this.responseText;
+                    load_options();
+                } else if (this.status === 404) {
+                    menu.innerHTML = 'Error ' + this.status;
+                }
+            };
+            xhttp.open("GET", 'menu/Device.html', true);
+            xhttp.send();
+
+        });
     select.value = json[0].toLowerCase();
 }
 
@@ -93,7 +110,7 @@ function set_check_boxes(group) {
         }
     });
     for (var i = 1; i < labels.length; i++) {
-        labels[i].getElementsByTagName('input')[0].checked = selected.includes(options[i-1]);
+        labels[i].getElementsByTagName('input')[0].checked = selected.includes(options[i - 1]);
         // app.print(labels[i].getElementsByTagName('input')[0].checked);
         labels[i].addEventListener('click', function () {
             var input = this.getElementsByTagName('input')[0];
@@ -121,13 +138,13 @@ function set_radio_buttons(group) {
 
 function load_heat_map() {
     var img = document.getElementById('heatmap');
-    app.print(app.get("image"));
+    // app.print(app.get("image"));
     img.style.backgroundImage = "url('images/Zernike heatmap.png')";
-    setTimeout(function() {
+    setTimeout(function () {
         var img = document.getElementById('heatmap');
-        app.print(app.get("image"));
-        img.style.backgroundImage = "url('file:/"+ app.get("image") +"')";
-    }, 1000);
+        // app.print(app.get("image"));
+        img.style.backgroundImage = "url('file:/" + app.get("image") + "')";
+    }, 100);
 }
 
 function load_options() {
